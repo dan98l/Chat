@@ -11,6 +11,9 @@ class ChatTableViewCell: UITableViewCell {
 
     // MARK: - IBOutlets
     
+    @IBOutlet weak var message: UILabel!
+    @IBOutlet weak var date: UILabel!
+    
     @IBOutlet weak var background: UIView! {
         didSet {
             background.backgroundColor = .black
@@ -20,5 +23,19 @@ class ChatTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    var viewModel: ChatTableViewCellModel?
+    var viewModel: ChatTableViewCellModel? {
+        didSet {
+            guard let viewModel = viewModel else { return }
+            self.message.text = viewModel.message
+            self.date.text = viewModel.date
+        }
+    }
+    
+    // MARK: - Functions
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        viewModel = nil
+    }
 }

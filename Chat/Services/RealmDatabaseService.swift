@@ -10,10 +10,12 @@ import RealmSwift
 
 protocol ChatService {
     func chats() -> [ChatModel]
-    func save(chat: ChatModel)
+    func chat(index: Int) -> ChatModel?
+    func save(chat: ChatModel, completion: @escaping () -> Void)
     func save(message: MessageModel, idChat: Int)
     func loadChats(completion: @escaping (Error?) -> Void)
-    func idForChat() -> Int
+    func getNewId() -> Int
+    func deleteChat(index: Int, completion: @escaping () -> Void)
 }
 
 class RealmDatabaseService {
@@ -24,7 +26,6 @@ class RealmDatabaseService {
     static func shared() -> RealmDatabaseService { sharedInstance }
         
     private let realm: Realm
-    
     private var chatsList: [ChatModel] = []
     
     // MARK: - Functions
@@ -36,14 +37,28 @@ class RealmDatabaseService {
 }
 
 extension RealmDatabaseService: ChatService {
+    func deleteChat(index: Int, completion: @escaping () -> Void) {
+
+        try! realm.write {
+            realm.delete( realm.objects(ChatModel.self).filter("id == \(index)"))
+        }
+        
+        completion()
+    }
+    
+    func chat(index: Int) -> ChatModel? {
+        let chat = chatsList.filter{$0.id == index}
+        return chat.first ?? nil
+    }
     
     func chats() -> [ChatModel] {
         chatsList
     }
     
-    func save(chat: ChatModel) {
+    func save(chat: ChatModel, completion: @escaping () -> Void) {
         try! realm.write {
             realm.add(chat)
+            completion()
         }
     }
     
@@ -53,7 +68,6 @@ extension RealmDatabaseService: ChatService {
         
         try! realm.write {
             chat.elements[0].messages.append(message)
-            print(message)
         }
     }
     
@@ -62,7 +76,7 @@ extension RealmDatabaseService: ChatService {
         chatsList = Array(chats)
     }
     
-    func idForChat() -> Int {
+    func getNewId() -> Int {
         loadChats { (error) in
             print(error ?? "Error get chats")
         }

@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ChatsScreenViewController: UIViewController, AutoLoadable {
-    
+class ChatsScreenViewController: UIViewController, AutoLoadable, TableHandler {
+
     // MARK: - IBOutlets
     
     @IBOutlet weak var infoLabel: UILabel!
@@ -28,9 +28,11 @@ class ChatsScreenViewController: UIViewController, AutoLoadable {
         settingHiddenUI()
     }
     
-    func setupTableView() {
+    private func setupTableView() {
         guard let viewModel = viewModel else { return }
-        viewModel.setupTableView()
+        viewModel.setupTableView {
+            self.chatsTableView.reloadData()
+        }
     }
     
     private func settingHiddenUI() {
@@ -54,6 +56,11 @@ class ChatsScreenViewController: UIViewController, AutoLoadable {
         guard let viewModel = viewModel else { return }
         viewModel.didTapAddButton()
     }
+    
+    func updateTableView() {
+        setupTableView()
+        settingHiddenUI()
+    }
 }
 
 // MARK: - TableView DataSource, Delegate
@@ -64,10 +71,31 @@ extension ChatsScreenViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell", for: indexPath) as! ChatTableViewCell
+        cell.viewModel = viewModel?.collectionCell(index: indexPath.row)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let viewModel = viewModel else { return }
+        viewModel.didTapTableCell(index: indexPath.row)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(style: .normal, title: "Delete") { (contextualAction, view, boolValue) in
+            self.viewModel?.didSwipeDeleteCell(index: indexPath.row) {
+                self.setupTableView()
+                self.settingHiddenUI()
+            }
+        }
+        deleteAction.image = UIImage(named: "iconDelete")?.withTintColor(.white)
+        deleteAction.backgroundColor = .red
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeActions
     }
 }

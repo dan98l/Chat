@@ -100,13 +100,12 @@ extension ChatScreenViewController: UICollectionViewDelegate, UICollectionViewDa
         
         switch viewModel?.user(index: indexPath.row) {
         case .sender:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MessageReceiverCell", for: indexPath) as! MessageReceiverViewCell
-            cell.viewModel = viewModel?.tableCellViewModelReceiver(index: indexPath.row)
-            
-            return cell
-        case .receiver:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MessageSenderCell", for: indexPath) as! MessageSenderViewCell
             cell.viewModel = viewModel?.tableCellViewModelSender(index: indexPath.row)
+            return cell
+        case .receiver:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MessageReceiverCell", for: indexPath) as! MessageReceiverViewCell
+            cell.viewModel = viewModel?.tableCellViewModelReceiver(index: indexPath.row)
             return cell
         case .none:
             return UICollectionViewCell()

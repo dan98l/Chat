@@ -11,7 +11,7 @@ protocol HomeCoordinatorlDelegate: class {
     func signIn()
 }
 
-class HomeCoordinator: HomeScreenViewModelDelegate {
+class HomeCoordinator: HomeScreenViewModelDelegate, ActivityViewModelDelegate {
     
     // MARK: - Properties
     
@@ -39,6 +39,24 @@ class HomeCoordinator: HomeScreenViewModelDelegate {
     }
     
     func didTapSignInButton(_ viewModel: HomeScreenViewModel) {
-        delegate?.signIn()
+        
+        showActivityScreen()
     }
+    
+    private func showActivityScreen() {
+        let activityScreenViewModel = ActivityViewModel()
+        activityScreenViewModel.delegate = self
+        
+        let activityScreenViewController = ActivityViewController.instantiate(from: "HomeScreen")
+        activityScreenViewController.viewModel = activityScreenViewModel
+        
+        navigationController.present(activityScreenViewController, animated: true, completion: nil)
+    }
+    
+    func dissmisActivityView(_ viewModel: ActivityViewModel) {
+        navigationController.dismiss(animated: true) {
+            self.delegate?.signIn()
+        }
+    }
+    
 }

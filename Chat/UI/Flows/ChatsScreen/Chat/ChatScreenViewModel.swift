@@ -21,6 +21,14 @@ class ChatScreenViewModel {
     private let chatModel = ChatModel()
     private var messages = [MessageModel]()
     
+    var changeСhatIndex: Int? {
+        didSet {
+            guard let index = changeСhatIndex else { return }
+            guard let chat = database.chat(index: index) else { return }
+            messages.append(contentsOf: chat.messages)
+        }
+    }
+    
     // MARK: - Functions
     
     init(database: RealmDatabaseService) {
@@ -34,17 +42,19 @@ class ChatScreenViewModel {
     func didTapSendMessageButton(message: String?, completion: @escaping () -> Void) {
         guard let message = message else { return }
         if !message.isEmpty {
-            let messageModel = MessageModel()
-            messageModel.date = time()
-            messageModel.message = message
-            messageModel.user = randomUser()
-            messages.append(messageModel)
+            let messageModel = MessageModel(date: Date(), user: randomUser(), message: message)
+            if changeСhatIndex == nil {
+                messages.append(messageModel)
+            } else {
+                messages.append(messageModel)
+                database.save(message: messageModel, idChat: changeСhatIndex!)
+            }
             completion()
         }
     }
     
     func didTapComebackButton() {
-        if messages.count > 0 {
+        if messages.count > 0 && changeСhatIndex == nil {
             save()
         } else {
             delegate?.dissmis(self)
@@ -52,11 +62,11 @@ class ChatScreenViewModel {
     }
     
     func tableCellViewModelSender(index: Int) -> MessageSenderViewCellModel {
-        MessageSenderViewCellModel(message: messages[index].message, date: messages[index].date)
+        MessageSenderViewCellModel(message: messages[index].message, date: time(index: index))
     }
     
     func tableCellViewModelReceiver(index: Int) -> MessageReceiverViewCellModel {
-        MessageReceiverViewCellModel(message: messages[index].message, date: messages[index].date)
+        MessageReceiverViewCellModel(message: messages[index].message, date: time(index: index))
     }
     
     func user(index: Int) -> User {
@@ -64,34 +74,23 @@ class ChatScreenViewModel {
     }
     
     private func save() {
-        chatModel.id =  database.idForChat()
+        chatModel.id = database.getNewId()
         for message in messages {
             chatModel.messages.append(message)
         }
-        database.save(chat: chatModel)
-        delegate?.dissmis(self)
+        database.save(chat: chatModel, completion: {
+            self.delegate?.dissmis(self)
+        })
     }
     
-    private func time() -> String {
-        let time = NSDate()
+    private func time(index: Int) -> String {
+        let time = messages[index].date
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
         return formatter.string(from: time as Date)
     }
     
     private func randomUser() -> User {
-        if Bool.random() {
-            return User.sender
-        } else {
-            return User.receiver
-        }
+        Bool.random() ? User.sender : User.receiver
     }
 }
-
-/*
- let time = NSDate()
- let formatter = DateFormatter()
- formatter.dateFormat = "HH:mm"
- let formatteddate = formatter.string(from: time as Date)
- print("\(formatteddate)")
- */

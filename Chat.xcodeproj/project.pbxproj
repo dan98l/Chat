@@ -36,6 +36,9 @@
 		A5A8AD7A260B4DAC00F0F7CE /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A8AD79260B4DAC00F0F7CE /* MessageModel.swift */; };
 		A5A8AD7E260B4DFF00F0F7CE /* RealmDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A8AD7D260B4DFF00F0F7CE /* RealmDatabaseService.swift */; };
 		A5A8ADAE260B5F0A00F0F7CE /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A8ADAD260B5F0A00F0F7CE /* HomeScreenViewController.swift */; };
+		A5BF7C48261DAEEF00D9C974 /* TableHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BF7C47261DAEEF00D9C974 /* TableHandler.swift */; };
+		A5BF7C4B261DAF2200D9C974 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BF7C4A261DAF2200D9C974 /* ActivityViewController.swift */; };
+		A5BF7C57261EED3600D9C974 /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BF7C56261EED3600D9C974 /* ActivityViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +73,9 @@
 		A5A8AD79260B4DAC00F0F7CE /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		A5A8AD7D260B4DFF00F0F7CE /* RealmDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabaseService.swift; sourceTree = "<group>"; };
 		A5A8ADAD260B5F0A00F0F7CE /* HomeScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
+		A5BF7C47261DAEEF00D9C974 /* TableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableHandler.swift; sourceTree = "<group>"; };
+		A5BF7C4A261DAF2200D9C974 /* ActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
+		A5BF7C56261EED3600D9C974 /* ActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +161,7 @@
 				A52FBACA2608624D00B8C4E9 /* HomeCoordinator.swift */,
 				A52FBAC7260861DE00B8C4E9 /* HomeScreen.storyboard */,
 				A52FBAD02608627A00B8C4E9 /* Home */,
+				A5BF7C4D261DAFA900D9C974 /* Activity */,
 			);
 			path = HomeScreen;
 			sourceTree = "<group>";
@@ -234,6 +241,7 @@
 				A5A8AD5E260B1A1D00F0F7CE /* AutoLoadable.swift */,
 				A560DFDB2614DECB00EE6FC5 /* String.swift */,
 				A560DFE22615D8B300EE6FC5 /* UIBarButtonItem+UIImage.swift */,
+				A5BF7C47261DAEEF00D9C974 /* TableHandler.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -262,6 +270,15 @@
 				A5A8AD7D260B4DFF00F0F7CE /* RealmDatabaseService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		A5BF7C4D261DAFA900D9C974 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				A5BF7C4A261DAF2200D9C974 /* ActivityViewController.swift */,
+				A5BF7C56261EED3600D9C974 /* ActivityViewModel.swift */,
+			);
+			path = Activity;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -340,10 +357,12 @@
 				A5A8AD76260B439400F0F7CE /* ChatModel.swift in Sources */,
 				A5A8ADAE260B5F0A00F0F7CE /* HomeScreenViewController.swift in Sources */,
 				A560DFDC2614DECC00EE6FC5 /* String.swift in Sources */,
+				A5BF7C48261DAEEF00D9C974 /* TableHandler.swift in Sources */,
 				A52FBAB626085B8F00B8C4E9 /* AppCoordinator.swift in Sources */,
 				A560DF712614A4A100EE6FC5 /* MessageSenderViewCell.swift in Sources */,
 				A5A8AD6F260B419B00F0F7CE /* ChatTableViewCellModel.swift in Sources */,
 				A5A8AD7A260B4DAC00F0F7CE /* MessageModel.swift in Sources */,
+				A5BF7C4B261DAF2200D9C974 /* ActivityViewController.swift in Sources */,
 				A52FBAE02609F85000B8C4E9 /* ChatsCoordinator.swift in Sources */,
 				A5A8AD5F260B1A1D00F0F7CE /* AutoLoadable.swift in Sources */,
 				A52FBACE2608626D00B8C4E9 /* HomeScreenViewModel.swift in Sources */,
@@ -352,6 +371,7 @@
 				A560DFE32615D8B400EE6FC5 /* UIBarButtonItem+UIImage.swift in Sources */,
 				A52FBACB2608624D00B8C4E9 /* HomeCoordinator.swift in Sources */,
 				A560DF3526135BD700EE6FC5 /* ChatScreenViewModel.swift in Sources */,
+				A5BF7C57261EED3600D9C974 /* ActivityViewModel.swift in Sources */,
 				A560DF7A2614A4DE00EE6FC5 /* MessageSenderViewCellModel.swift in Sources */,
 				A560DF772614A4B300EE6FC5 /* MessageReceiverViewCell.swift in Sources */,
 				A52FBAA026085AB400B8C4E9 /* AppDelegate.swift in Sources */,

@@ -46,12 +46,13 @@ class ChatsCoordinator: ChatsScreenViewModelDelegate, ChatScreenViewModelDelegat
     func dissmis(_ viewModel: ChatScreenViewModel) {
         guard let chatScreenViewController = chatScreenViewController,
               let chatsScreenViewController = chatsScreenViewController else { return }
+        chatsScreenViewController.updateTableView()
         chatScreenViewController.dismiss(animated: true) {
             self.navigationController.popToViewController(chatsScreenViewController, animated: true)
         }
     }
     
-    private func showChatScreen() {
+    private func showChatScreen(index: Int? = nil) {
         let chatScreenViewModel = ChatScreenViewModel(database: database)
         
         chatScreenViewController = ChatScreenViewController.instantiate(from: "ChatsScreen")
@@ -59,6 +60,15 @@ class ChatsCoordinator: ChatsScreenViewModelDelegate, ChatScreenViewModelDelegat
         guard let chatScreenViewController = chatScreenViewController else { return }
         chatScreenViewController.viewModel = chatScreenViewModel
         chatScreenViewModel.delegate = self
+        
+        if let index = index {
+            chatScreenViewModel.changeСhatIndex = index
+        }
+        
         navigationController.pushViewController(chatScreenViewController, animated: true)
+    }
+    
+    func didTapTableCell(_ viewModel: ChatsScreenViewModel, index: Int) {
+        showChatScreen(index: index)
     }
 }
